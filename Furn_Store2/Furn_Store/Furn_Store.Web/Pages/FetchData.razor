@@ -1,0 +1,57 @@
+﻿@using ViewModels
+@using Microsoft.AspNetCore.Hosting;
+@using Furn_Store.Data.Parameters;
+@inject Services.ItemService itemService
+@inject IWebHostEnvironment _appEnvironment
+@page "/fetchdata"
+<h3>Items</h3>
+@*<div>
+    <MatPaginator PageSize="@pageSize" Page="@OnPage"></MatPaginator>
+</div>
+<br />
+
+<div style="display:flex; justify-content: flex-end;">
+    <MatSelectItem @bind-Value="@orderBy" Items="@orderByArr"></MatSelectItem>
+</div>
+<div style="display: flex; flex-direction: column; align-items: flex-end; width: 100%; padding: 0;">
+
+    <div style="width: auto;  padding: 0">
+        <p style="margin: 0">Цена:</p>
+        <input type="number" min="0" max="@float.MaxValue" step="0.01" @bind="minPrice" placeholder="minPrice" />
+        -
+        <input type="number" min="0" max="@float.MaxValue" step="0.01" @bind="maxPrice" placeholder="maxPrice" />
+    </div>
+    <br />
+</div>*@
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>CategoryId</th>
+                <th>FactoryId</th>
+            </tr>
+        </thead>
+        @*<tbody>
+            @foreach (var item in items)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.Description</td>
+                    <td>@item.Price</td>
+                    <td>@item.CategoryId</td>
+                    <td>@item.FactoryId</td>
+                </tr>
+            }
+        </tbody>*@
+    </table>
+
+}
+@code {
+   
+
+}

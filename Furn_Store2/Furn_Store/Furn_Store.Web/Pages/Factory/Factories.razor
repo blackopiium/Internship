@@ -1,0 +1,56 @@
+﻿@using Furn_Store.Business.DTO
+@using ViewModels
+@using Microsoft.AspNetCore.Hosting;
+@using Furn_Store.Data.Parameters;
+@inject IStringLocalizer<Factories> L
+@inject Services.FactoryService factoryService
+@inject IWebHostEnvironment _appEnvironment
+@page "/factories"
+<div>
+    <MatPaginator Length="@elementCount" PageSize="@pageSize" Page="@OnPage"></MatPaginator>
+</div>
+<br />
+@if (factories == null)
+{
+    <p><em>@L["Не знайдено"]</em></p>
+}
+else
+{
+    @foreach (var factory in factories)
+    {
+        <Factory Name="@factory.name" Id="@factory.id.ToString()" ImageSource="@factory.imagePath"></Factory>
+    }
+}
+@code {
+    string orderBy;
+    string[] orderByArr = new[]
+    {
+            "Name",
+            "Name desc"
+        };
+    List<FactoryViewModel> factories;
+    int elementCount = 0;
+    int pageSize = 25;
+    int pageIndex = 0;
+    protected override async Task OnInitializedAsync()
+    {
+        FactoryParameters parameters = new FactoryParameters
+        {
+            PageNumber = pageIndex + 1,
+            PageSize = pageSize
+        };
+        factories = await factoryService.GetFactories(parameters);
+        elementCount = await factoryService.CountItems(parameters);
+    }
+    protected async Task OnPage(MatPaginatorPageEvent m)
+    {
+        factories = await factoryService.GetFactories(new FactoryParameters
+        {
+            PageNumber = m.PageIndex + 1,
+            PageSize = m.PageSize,
+            @*OrderBy = orderBy*@
+        });
+        pageSize = m.PageSize;
+        pageIndex = m.PageIndex;
+    }
+}

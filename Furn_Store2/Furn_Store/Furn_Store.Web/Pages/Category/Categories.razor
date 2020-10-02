@@ -1,0 +1,57 @@
+﻿@using Furn_Store.Business.DTO
+@using ViewModels
+@using Microsoft.AspNetCore.Hosting;
+@using Furn_Store.Data.Parameters;
+@inject IStringLocalizer<Categories> L
+@inject Services.CategoryService categoryService
+@inject IWebHostEnvironment _appEnvironment
+@page "/categories"
+@*<h3>Categories</h3>*@
+<div>
+    <MatPaginator Length="@elementCount" PageSize="@pageSize" Page="@OnPage"></MatPaginator>
+</div>
+<br />
+@if (categories == null)
+{
+    <p><em>@L["Не знайдено"]</em></p>
+}
+else
+{
+    @foreach (var category in categories)
+    {
+        <Category Name="@category.name" Id="@category.id.ToString()" ImageSource="@category.imagePath"></Category>
+    }
+}
+@code {
+    string orderBy;
+    string[] orderByArr = new[]
+    {
+            "Name",
+            "Name desc"
+        };
+    List<CategoryViewModel> categories;
+    int elementCount = 0;
+    int pageSize = 25;
+    int pageIndex = 0;
+    protected override async Task OnInitializedAsync()
+    {
+        CategoryParameters parameters = new CategoryParameters
+        {
+            PageNumber = pageIndex + 1,
+            PageSize = pageSize
+        };
+        categories = await categoryService.GetCategories(parameters);
+        elementCount = await categoryService.CountItems(parameters);
+    }
+    protected async Task OnPage(MatPaginatorPageEvent m)
+    {
+        categories = await categoryService.GetCategories(new CategoryParameters
+        {
+            PageNumber = m.PageIndex + 1,
+            PageSize = m.PageSize,
+            @*OrderBy = orderBy*@
+        });
+        pageSize = m.PageSize;
+        pageIndex = m.PageIndex;
+    }
+}

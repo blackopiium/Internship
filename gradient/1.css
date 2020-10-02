@@ -1,0 +1,236 @@
+body{
+	width:1500px;
+	height: 1300px;
+	background-image: url(images/grad.jpg); 
+	background-size: cover;
+}
+header{
+	position: relative;
+	width: 57%;
+	height: 30%;
+	left: 20%;
+	top: 3%;
+}
+.me{
+	position: absolute;
+	width: 20%;
+	height: 50%;
+	left: 40%;
+	top: 10%;
+	border-radius: 50%;
+	background-image:  url(images/ME.jpg);
+	background-size: cover;
+
+}
+.headtext{
+	position: absolute;
+	font-size: 15pt;
+	font-family: 'Raleway', sans-serif;
+	color: #dfdce3;
+	opacity: 40%;
+	top: 60%;
+	left: 15%;
+
+}
+.inst_icon{
+	position: absolute;
+	width: 7%;
+	height: 15%;
+	border: 1px solid white;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.3);
+	top: 80%;
+	left: 25%;
+	border: 2px solid white;
+}
+.inst{
+	position: absolute;
+	width: 60%;
+	height: 60%;
+	top: 20%;
+	left: 20%;
+}
+.face_icon{
+	position: absolute;
+	width: 7%;
+	height: 15%;
+	border: 1px solid white;
+	border-radius: 50%;
+	top: 80%;
+	left: 35%;
+	background: rgba(255, 255, 255, 0.3);
+	border: 2px solid white;
+}
+
+.twi_icon{
+	position: absolute;
+	width: 7%;
+	height: 15%;
+	border: 1px solid white;
+	border-radius: 50%;
+	top: 80%;
+	left: 45%;
+	background: rgba(255, 255, 255, 0.3);
+	border: 2px solid white;
+}
+
+.mail_icon{
+	position: absolute;
+	width: 7%;
+	height: 15%;
+	border: 1px solid white;
+	border-radius: 50%;
+	top: 80%;
+	left: 55%;
+	background: rgba(255, 255, 255, 0.3);
+	border: 2px solid white;
+}
+.pint_icon{
+	position: absolute;
+	width: 7%;
+	height: 15%;
+	border: 1px solid white;
+	border-radius: 50%;
+	top: 80%;
+	left: 65%;
+	background: rgba(255, 255, 255, 0.3);
+	border: 2px solid white;
+}
+
+p{
+	position: absolute;
+	font-size: 12pt;
+	font-family: 'Raleway', sans-serif;
+	color: #dfdce3;
+	left: 36%;
+}
+main{
+	position: relative;
+	height: 60%;
+	width: 99%;
+	top: 5%;
+}
+.trav{
+	position: absolute;
+	width: 17%;
+	height: 40%;
+	top: 5%;
+	left: 7%;
+	background-image: url(images/travel1.jpg);
+	background-size: cover;
+}
+.tr1{
+	position: absolute;
+	width: 17%;
+	height: 5%;
+	top: 45%;
+	left: 7%;
+	background: rgba(255, 255, 255, 0.3);
+}
+
+.trav2{
+	position: absolute;
+	width: 17%;
+	height: 25%;
+	top: 55%;
+	left: 7%;
+	background-image: url(images/travel2.jpg);
+	background-size: cover;
+}
+.tr2{
+	position: absolute;
+	width: 17%;
+	height: 5%;
+	top: 80%;
+	left: 7%;
+	background: rgba(255, 255, 255, 0.3);
+}
+.trav3{
+	position: absolute;
+	width: 17%;
+	height: 25%;
+	top: 5%;
+	left: 36%;
+	background-image: url(images/travel4.jpg);
+	background-size: cover;
+}
+.tr3{
+
+	position: absolute;
+	width: 17%;
+	height: 5%;
+	top: 30%;
+	left: 36%;
+	background: rgba(255, 255, 255, 0.3);
+
+}
+.trav4{
+	position: absolute;
+	width: 17%;
+	height: 32%;
+	top: 40%;
+	left: 36%;
+	background-image: url(images/travel5.jpg);
+	background-size: cover;
+}
+.tr4{
+	position: absolute;
+	width: 17%;
+	height: 5%;
+	top: 72%;
+	left: 36%;
+	background: rgba(255, 255, 255, 0.3);
+	
+}
+.trav5{
+	position: absolute;
+	width: 17%;
+	height: 15%;
+	top: 80%;
+	left: 36%;
+	background-image: url(images/travel6.jpg);
+	background-size: cover;
+}
+.tr5{
+	position: absolute;
+	width: 17%;
+	height: 5%;
+	top: 95%;
+
+	left: 36%;
+	background: rgba(255, 255, 255, 0.3);
+}
+.trav6{
+	position: absolute;
+	width: 17%;
+	height: 35%;
+	top: 5%;
+	left: 70%;
+	background-image: url(images/travel7.jpg);
+	background-size: cover;
+}
+.tr6{
+	position: absolute;
+	width: 17%;
+	height: 5%;
+	top: 40%;
+	left: 70%;
+	background: rgba(255, 255, 255, 0.3);
+}
+.trav7{
+position: absolute;
+	width: 17%;
+	height: 40%;
+	top: 50%;
+	left: 70%;
+	background-image: url(images/travel8.jpg);
+	background-size: cover;	
+}
+.tr7{
+	position: absolute;
+	width: 17%;
+	height: 5%;
+	top: 90%;
+	left: 70%;
+	background: rgba(255, 255, 255, 0.3);
+}

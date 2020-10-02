@@ -1,0 +1,70 @@
+﻿@using ViewModels
+@using Microsoft.AspNetCore.Http
+@inject Services.CharachteristicsService charService
+@inject Services.ItemService itemService 
+@page "/charachteristics/add" 
+<h3>Charachteristics_Add</h3>
+<p>
+    <MatSelectItem @bind-Value="@Item" Items="@ItemNames"></MatSelectItem>
+</p>
+<p>
+    <MatTextField @bind-Value="@Width" Label="Ширина"></MatTextField>
+</p>
+<p>
+    <MatTextField @bind-Value="@Height" Label="Висота"></MatTextField>
+</p>
+<p>
+    <MatTextField @bind-Value="@Length" Label="Довжина"></MatTextField>
+</p>
+<p>
+    <MatTextField @bind-Value="@Colour" Label="Колір"></MatTextField>
+</p>
+<button @onclick="Insert"  class="btn btn-sm btn-primary">Додати</button>
+@code {
+    public int Width { get; set; }
+    public int Height { get; set; }
+    public int Length { get; set; }
+    public string Colour { get; set; }
+
+    public List<ItemViewModel> Items;
+    public List<string> ItemNames = new List<string>();
+    public string Item { get; set; }
+
+    public string Error { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        Items = await itemService.GetItemsWithoutParameters();
+        foreach (var item in Items)
+        {
+            ItemNames.Add(item.name);
+        }
+    }
+    protected async Task Insert()
+    {
+        try
+        {
+            int ItemId = Items.First(x => x.name == Item).id;
+            Charachterisitics_Item_ViewModel charachterisitics_Item = new Charachterisitics_Item_ViewModel()
+            {
+                width_it = Width,
+                height_it = Height,
+                colour_it = Colour,
+                itemId=ItemId
+            };
+            await charService.AddCharach(charachterisitics_Item);
+            ClearFields();
+        }
+        catch (Exception e)
+        {
+            Error = e.Message;
+        }
+
+    }
+    protected void ClearFields()
+    {
+        Width = 0;
+        Height = 0;
+        Length = 0;
+        Colour = "";
+    }
+}

@@ -1,0 +1,38 @@
+﻿@inject Services.AccountService accountService
+@inject NavigationManager NavigationManager
+@using ViewModels
+@page "/login"
+<h3>Вхід</h3>
+<EditForm Model="@login" OnValidSubmit="@LoginS">
+    <FluentValidator></FluentValidator>
+    <ValidationSummary />
+    <p>@Error</p>
+    <p>
+        <MatTextField @bind-Value="login.username" Label="Username"></MatTextField>
+    </p>
+    <p>
+        <MatTextField @bind-Value="login.password" Label="Пароль" Type="password"></MatTextField>
+    </p>
+    <p>
+        <MatCheckbox @bind-Value="login.rememberMe" Label="Запам'ятати"></MatCheckbox>
+    </p>
+    <button type="submit" class="btn btn-sm btn-primary">Увійти</button>
+</EditForm>
+@code {
+    LoginViewModel login { get; set; } = new LoginViewModel();
+    public string Error;
+    private async Task LoginS()
+    {
+        Error = "";
+        var result = await accountService.Login(login);
+        if (result.success)
+        {
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            Error = result.error;
+        }
+    }
+
+}

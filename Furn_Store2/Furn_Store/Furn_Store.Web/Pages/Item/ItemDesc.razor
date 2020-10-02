@@ -1,0 +1,56 @@
+﻿@page "/items/{id}"
+@inject Services.ItemService itemService
+@inject Services.CharachteristicsService charService  
+@inject Services.CategoryService categoryService 
+@using ViewModels  
+@if (item==null)
+{
+<p> Товар не знайдено </p>
+}
+else
+{
+    <img src="@imagePath" style="border-style: outset; border-width: 1px; margin-right: 1%; margin-bottom: 1%; width: 70%;"/>
+    <br />
+<p><b>Категорія: </b>@category</p>
+<p><b>Опис: </b>@item.description</p>
+<p><b>Ціна: </b>UAH @item.price</p>
+<p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Ширина</th>
+                <th>Висота</th>
+                <th>Довжина</th>
+                <th>Колір</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+                <tr>
+                    <td>@charachterisitics</td>
+                </tr>
+            
+        </tbody>
+    </table>
+</p>
+}
+
+@code {
+    ItemViewModel item;
+    string imagePath { get; set; }
+    string category { get; set; }
+    [Parameter]
+    public string Id { get; set; }
+    string charachterisitics;
+
+    protected override async Task OnInitializedAsync()
+    {
+        item = await itemService.GetItemById(Int32.Parse(Id));
+        if (string.IsNullOrWhiteSpace(item.imagePath))
+            imagePath = "/item_image/unknown.jpg";
+        else
+            imagePath = item.imagePath;
+        category = await categoryService.GetById(item.categoryId);
+        charachterisitics = await charService.GetCharById(item.charachteristics_Item_Id);
+    }
+}

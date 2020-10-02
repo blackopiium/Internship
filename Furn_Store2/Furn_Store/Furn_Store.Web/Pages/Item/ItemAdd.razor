@@ -1,0 +1,136 @@
+﻿@page "/items/add"
+@using ViewModels
+@using Microsoft.AspNetCore.Hosting
+@using Microsoft.AspNetCore.Http
+@using System.IO
+@inject IWebHostEnvironment _appEnviroment
+@inject Services.ItemService itemService
+@inject Services.CategoryService categoryService
+@inject Services.FactoryService factoryService
+<h3>ItemAdd</h3>
+<EditForm Model="@Item" OnValidSubmit="@Insert">
+    <FluentValidator></FluentValidator>
+    <ValidationSummary />
+    <p>
+        <MatTextField @bind-Value="@Item.name" Label="Name"></MatTextField>
+    </p>
+    <p>
+        <MatTextField @bind-Value="@Item.price" Label="Price"></MatTextField>
+    </p>
+    <p>
+        <MatTextField @bind-Value="@Item.description" Label="Description" TextArea="true" Outlined="true"></MatTextField>
+    </p>
+    @*<p>
+            <MatTextField @bind-Value="@Height" Label="Height"></MatTextField>
+        </p>*@
+    <p>
+        <MatSelectItem @bind-Value="@Category" Items="CategoriesName"></MatSelectItem>
+    </p>
+    <p>
+        <MatSelectItem @bind-Value="@Factory" Items="FactoriesName"></MatSelectItem>
+    </p>
+
+    <InputFile OnChange="HandleFileSelected" />
+    @if (file != null)
+    {
+        <p>Доданий файл : @file.Name</p>}
+    <br />
+    <br />
+
+    <button type="submit" class="btn btn-sm btn-primary">Insert</button>
+
+    <p>@Error</p>
+</EditForm>
+    @code {
+        private ItemViewModel Item { get; set; } = new ItemViewModel();
+        public string Name { get; set; }
+        public float Price { get; set; }
+        public string Description { get; set; }
+
+        public List<CategoryViewModel> Categories;
+        public List<string> CategoriesName = new List<string>();
+        public string Category { get; set; }
+
+        public List<FactoryViewModel> Factories;
+        public List<string> FactoriesName = new List<string>();
+        public string Factory { get; set; }
+
+
+
+        public string Error { get; set; }
+        IFileListEntry file;
+        void HandleFileSelected(IFileListEntry[] files)
+        {
+            file = files.FirstOrDefault();
+        }
+        protected override async Task OnInitializedAsync()
+        {
+            Categories = await categoryService.GetCategoriesWithoutParameters();
+            foreach (var category in Categories)
+            {
+                CategoriesName.Add(category.name);
+            }
+            Factories = await factoryService.GetFactoriesWithoutParameters();
+            foreach (var factory in Factories)
+            {
+                FactoriesName.Add(factory.name);
+            }
+        }
+        protected async Task Insert()
+        {
+            Error = "";
+            try
+            {
+                int CategoryId = Categories.First(x => x.name == Category).id;
+                int FactoryId = Factories.First(x => x.name == Factory).id;
+
+                string Path;
+                if (file == null)
+                    throw new Exception("File not found");
+                if (file.Type != "image/jpeg")
+                    throw new Exception("File in the wrong format! Please use .jpg");
+                Item.categoryId = CategoryId;
+                Item.factoryId = FactoryId;
+                Path = await AddFile(file);
+                Item.imagePath = Path;
+
+                var result = await itemService.AddItem(Item);
+                if (!result.IsSuccessStatusCode)
+                    throw new Exception(result.StatusCode.ToString());
+                ClearFields();
+            }
+            catch (Exception e)
+            {
+                Error = e.Message;
+            }
+        }
+        protected void ClearFields()
+        {
+            Item.name = "";
+            Item.price = 0;
+            Item.description = "";
+            file = null;
+        }
+        protected async Task<string> AddFile(IFileListEntry uploadedFile)
+        {
+            if (uploadedFile != null)
+            {
+                var newFile = await uploadedFile.ToImageFileAsync("image/jpeg", 720, 310);//resizing
+
+                var date = DateTime.Now;
+                string path = "/item_image/"
+                    + $"{date.Year}_{date.Month}_{date.Day}_{date.Hour}_{date.Minute}_{date.Second}_"
+                    + newFile.Name;//generating unique filename
+
+                using (var filestream = new FileStream(_appEnviroment.WebRootPath + path, FileMode.Create))
+                {
+                    await newFile.Data.CopyToAsync(filestream);//сохранение файла по пути
+                }
+
+                return path;
+            }
+            else
+                return null;
+
+        }
+    }

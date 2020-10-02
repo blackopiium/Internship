@@ -1,0 +1,46 @@
+﻿@using Furn_Store.Web.ViewModels;
+@inject Furn_Store.Web.Services.AccountService accountService
+@inject NavigationManager NavigationManager
+@page "/register"
+<h3>Register</h3>
+<EditForm Model="@register" OnValidSubmit="@Registerr">
+    <FluentValidator></FluentValidator>
+    <ValidationSummary />
+    <p>@Error</p>
+    <p>
+        <MatTextField @bind-Value="register.userName" Label="Username"></MatTextField>
+    </p>
+    <p>
+        <MatTextField @bind-Value="register.email" Label="Email"></MatTextField>
+    </p>
+    <p>
+        <MatTextField @bind-Value="register.password" Label="Пароль" Type="password"></MatTextField>
+    </p>
+    <p>
+        <MatTextField @bind-Value="register.passwordConfirm" Label="Підтвердіть пароль" Type="password"></MatTextField>
+    </p>
+    <button type="submit" class="btn btn-sm btn-primary">Зареєструватись</button>
+</EditForm>
+    @text
+    @code {
+        RegisterViewModel register { get; set; } = new RegisterViewModel();
+        @* public string Username { get; set; }
+            public string Email { get; set; }
+            public string Password { get; set; }
+            public string PasswordConfirm { get; set; }*@
+        public string text;
+        public string Error;
+        private async Task Registerr()
+        {
+            Error = "";
+            var result = await accountService.CreateUserAsync(register);
+            if (result.IsSuccessStatusCode)
+                NavigationManager.NavigateTo("/");
+            else
+            {
+                Error = await result.Content.ReadAsStringAsync();
+            }
+
+        }
+    }
+

@@ -1,0 +1,93 @@
+﻿@page "/categories/add"
+@using ViewModels
+@using Microsoft.AspNetCore.Hosting
+@using Microsoft.AspNetCore.Http
+@using System.IO
+@inject IWebHostEnvironment _appEnviroment
+@inject Services.CategoryService categoryService
+<h3>CategoryAdd</h3>
+<EditForm Model="@Category" OnValidSubmit="@Insert">
+    <FluentValidator></FluentValidator>
+    <ValidationSummary />
+    <p>
+        <MatTextField @bind-Value="@Category.name" Label="Name"></MatTextField>
+    </p>
+    <p>
+        <MatTextField @bind-Value="@Category.description" Label="Description" TextArea="true" Outlined="true"></MatTextField>
+    </p>
+    <InputFile OnChange="HandleFileSelected" />
+    @if (file != null)
+    {
+        <p>Доданий файл : @file.Name</p>
+    }
+    <br />
+    <br />
+
+    <button type="submit" class="btn btn-sm btn-primary">Insert</button>
+
+    <p>@Error</p>
+    </EditForm>
+    @code {
+        private CategoryViewModel Category { get; set; } = new CategoryViewModel();
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Error { get; set; }
+        IFileListEntry file;
+        void HandleFileSelected(IFileListEntry[] files)
+        {
+            file = files.FirstOrDefault();
+        }
+
+        protected async Task Insert()
+        {
+            Error = "";
+            try
+            {
+
+                string Path;
+                if (file == null)
+                    throw new Exception("File not found");
+                if (file.Type != "image/jpeg")
+                    throw new Exception("File in the wrong format! Please use .jpg");
+                Path = await AddFile(file);
+                Category.imagePath = Path;
+
+                var result= await categoryService.AddCategorty(Category);
+                if (!result.IsSuccessStatusCode)
+                    throw new Exception(result.StatusCode.ToString());
+                ClearFields();
+            }
+            catch (Exception e)
+            {
+                Error = e.Message;
+            }
+        }
+        protected void ClearFields()
+        {
+            Category.name = "";
+            Category.description = "";
+            file = null;
+        }
+        protected async Task<string> AddFile(IFileListEntry uploadedFile)
+        {
+            if (uploadedFile != null)
+            {
+                var newFile = await uploadedFile.ToImageFileAsync("image/jpeg", 720, 310);
+
+                var date = DateTime.Now;
+                string path = "/category_image/"
+                    + $"{date.Year}_{date.Month}_{date.Day}_{date.Hour}_{date.Minute}_{date.Second}_"
+                    + newFile.Name;
+
+                using (var filestream = new FileStream(_appEnviroment.WebRootPath + path, FileMode.Create))
+                {
+                    await newFile.Data.CopyToAsync(filestream);
+                }
+
+                return path;
+            }
+            else
+                return null;
+
+        }
+    }

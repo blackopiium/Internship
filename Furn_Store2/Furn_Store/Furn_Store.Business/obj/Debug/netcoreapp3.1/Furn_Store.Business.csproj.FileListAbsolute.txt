@@ -1,0 +1,12 @@
+C:\Users\Admin\OneDrive\Документы\Furniture_Store\Furn_Store2\Furn_Store\Furn_Store.Business\bin\Debug\netcoreapp3.1\Furn_Store.Business.deps.json
+C:\Users\Admin\OneDrive\Документы\Furniture_Store\Furn_Store2\Furn_Store\Furn_Store.Business\bin\Debug\netcoreapp3.1\Furn_Store.Business.dll
+C:\Users\Admin\OneDrive\Документы\Furniture_Store\Furn_Store2\Furn_Store\Furn_Store.Business\obj\Debug\netcoreapp3.1\Furn_Store.Business.csprojAssemblyReference.cache
+C:\Users\Admin\OneDrive\Документы\Furniture_Store\Furn_Store2\Furn_Store\Furn_Store.Business\obj\Debug\netcoreapp3.1\Furn_Store.Business.AssemblyInfoInputs.cache
+C:\Users\Admin\OneDrive\Документы\Furniture_Store\Furn_Store2\Furn_Store\Furn_Store.Business\obj\Debug\netcoreapp3.1\Furn_Store.Business.AssemblyInfo.cs
+C:\Users\Admin\OneDrive\Документы\Furniture_Store\Furn_Store2\Furn_Store\Furn_Store.Business\bin\Debug\netcoreapp3.1\Furn_Store.Business.pdb
+C:\Users\Admin\OneDrive\Документы\Furniture_Store\Furn_Store2\Furn_Store\Furn_Store.Business\bin\Debug\netcoreapp3.1\Furn_Store.Data.dll
+C:\Users\Admin\OneDrive\Документы\Furniture_Store\Furn_Store2\Furn_Store\Furn_Store.Business\bin\Debug\netcoreapp3.1\Furn_Store.Data.pdb
+C:\Users\Admin\OneDrive\Документы\Furniture_Store\Furn_Store2\Furn_Store\Furn_Store.Business\obj\Debug\netcoreapp3.1\Furn_Store.Business.csproj.CoreCompileInputs.cache
+C:\Users\Admin\OneDrive\Документы\Furniture_Store\Furn_Store2\Furn_Store\Furn_Store.Business\obj\Debug\netcoreapp3.1\Furn_Store.Business.csproj.CopyComplete
+C:\Users\Admin\OneDrive\Документы\Furniture_Store\Furn_Store2\Furn_Store\Furn_Store.Business\obj\Debug\netcoreapp3.1\Furn_Store.Business.dll
+C:\Users\Admin\OneDrive\Документы\Furniture_Store\Furn_Store2\Furn_Store\Furn_Store.Business\obj\Debug\netcoreapp3.1\Furn_Store.Business.pdb

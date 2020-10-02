@@ -1,0 +1,10 @@
+﻿@page "/exit"
+@inject Services.AccountService accountService
+@inject NavigationManager NavigationManager
+@code { 
+    protected override async Task OnInitializedAsync()
+            {
+                await accountService.Exit();
+                NavigationManager.NavigateTo("/");
+            } 
+    }

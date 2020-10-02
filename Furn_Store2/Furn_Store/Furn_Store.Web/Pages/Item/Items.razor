@@ -1,0 +1,159 @@
+﻿@using Furn_Store.Business.DTO
+@using ViewModels
+@using Microsoft.AspNetCore.Hosting;
+@using Furn_Store.Data.Parameters;
+@inject IStringLocalizer<Items> L
+@inject Services.CategoryService categoryService
+@inject Services.ItemService itemService
+@inject IWebHostEnvironment _appEnvironment
+@page "/items"
+@*    <div class="wrap">
+    <aside>
+        <div class="logo">
+            <img src="images/logo.svg" alt="">
+        </div>
+        <div class="nav-bar">
+            <p>Категорії</p>
+            <ul>
+                <a href="#"><li>М'які частини</li></a>
+                <a href="#"><li>Меблі для спальні</li></a>
+                <a href="#"><li>Меблі для передпокою</li></a>
+                <a href="#"><li>Шафи</li></a>
+                <a href="#"><li>Столи та стільці</li></a>
+                <a href="#"><li>Тумби</li></a>
+            </ul>
+        </div>
+    </aside>*@
+<div>
+    <MatPaginator Length="@elementCount" PageSize="@pageSize" Page="@OnPage"></MatPaginator>
+</div>
+<br />
+
+<div style="display:flex; justify-content: flex-end;">
+    <MatSelectItem @bind-Value="@orderBy" Items="@orderByArr"></MatSelectItem>
+</div>
+@*<div style="display:flex; justify-content: flex-end;">
+    <MatSelectItem @bind-Value="@Category" Items="CategoriesName"></MatSelectItem>
+</div>*@
+
+<div style="display: flex; flex-direction: column; align-items: flex-begin; width: 100%; padding: 0;">
+
+    <div style="width: auto;  padding: 0">
+        <p style="margin: 0">@L["Ціна"]:</p>
+        <input type="number" min="0" max="@float.MaxValue" step="0.01" @bind="minPrice" placeholder="@L["Мінімальна ціна"]" />
+        -
+        <input type="number" min="0" max="@float.MaxValue" step="0.01" @bind="maxPrice" placeholder="@L["Максимальна ціна"]" />
+    </div>
+
+    <br />
+    <div style="width: auto; left: 5%">
+        <p style="margin: 0">Пошук:</p>
+        <input type="text" @bind="Namein" />
+        <button @onclick="Search" class="btn btn-sm btn-primary">Пошук</button>
+    </div>
+</div>
+
+
+@if (items == null)
+{
+    <p><em>@L["Не знайдено"]</em></p>
+}
+else
+{
+    <!--<table class="table">
+        <thead>
+            <tr>-->
+    @*   <th>Id</th>*@
+    <!--<th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>CategoryId</th>
+            <th>FactoryId</th>
+            <th>Image</th>
+        </tr>
+    </thead>
+    <tbody>-->
+    @foreach (var item in items)
+    {
+        @*<tr>
+                 <td>@item.Id</td>
+                <td>@item.name</td>
+                <td>@item.description</td>
+                <td>@item.price</td>
+                <td>@item.categoryId</td>
+                <td>@item.factoryId</td>
+                <td><img src="@item.imagePath"></td>
+            </tr>*@
+        <Item Name="@item.name" Id="@item.id.ToString()" ImageSource="@item.imagePath" Price="@item.price.ToString()"></Item>
+    }
+    @* </tbody>
+        </table>*@
+}
+@code {
+    public List<CategoryViewModel> Categories;
+    public List<string> CategoriesName = new List<string>();
+    public string Category { get; set; }
+    string Namein;
+    int pageSize = 25;
+    int pageIndex = 0;
+    int elementCount = 0;
+    string orderBy;
+    string[] orderByArr = new[]
+    {
+            "Price",
+            "Price desc",
+            "Name",
+            "Name desc"
+        };
+    float minPrice = 0;
+    float maxPrice = float.MaxValue;
+    List<ItemViewModel> items;
+    protected override async Task OnInitializedAsync()
+    {
+        ItemParameters parameters = new ItemParameters
+        {
+            PageNumber = pageIndex + 1,
+            PageSize = pageSize,
+            MaxPrice = float.MaxValue,
+            MinPrice = 0,
+            @* Category=Category*@
+        };
+        @* Categories = await categoryService.GetCategories();
+            foreach (var category in Categories)
+            {
+                CategoriesName.Add(category.name);
+            }*@
+    items = await itemService.GetItems(parameters);
+    elementCount = await itemService.CountItems(parameters);
+}
+protected async Task OnPage(MatPaginatorPageEvent m)
+{
+    items = await itemService.GetItems(new ItemParameters
+    {
+        PageNumber = m.PageIndex + 1,
+        PageSize = m.PageSize,
+        MinPrice = minPrice,
+        MaxPrice = maxPrice,
+        OrderBy = orderBy,
+        Name=Namein
+    });
+    pageSize = m.PageSize;
+    pageIndex = m.PageIndex;
+}
+protected async Task Search()
+{
+    ItemParameters parameters = new ItemParameters
+    {
+        PageNumber = pageIndex + 1,
+        PageSize = pageSize,
+        Name = Namein,
+        MinPrice = minPrice,
+        MaxPrice = maxPrice,
+        OrderBy = orderBy
+    };
+    items = await itemService.GetItems(parameters);
+    elementCount = await itemService.CountItems(parameters);
+}
+}
+
+
